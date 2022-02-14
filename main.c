@@ -5,20 +5,22 @@
 #include "get_next_line/get_next_line.h"
 #include "Libft/libft.h"
 
-char	*get_command (char **av, char **env)
+char	*get_command (char **av, char **env, int count)
 {
 	int i = 0;
 	int j = 0;
 	char **paths;
 	char **arg;
-
 	while (env[i])
 	{
 		if (strncmp(env[i],"PATH=",5) == 0)
 			paths = ft_split(strnstr(env[i], "/", 6), ':');
 		i++;
 	}
-	arg = ft_split(av[2], ' ');
+	if (count == 0)
+		arg = ft_split(av[2], ' ');
+	if (count == 1)
+		arg = ft_split(av[3], ' ');
 	while (paths[j])
 	{
 		paths[j] = ft_strjoin(paths[j], "/");
@@ -32,12 +34,37 @@ char	*get_command (char **av, char **env)
 int main(int ac, char **av, char **env)
 {
 	int fd;
-	char    *v[] = {"ls", "-l", "-a", NULL};
-	int i = 0;
+	int	i;
+	int	fd_f[2];
+	int id;
+	int id1;
 
 	fd = open (av[1], O_RDWR);
-	char **u = ft_split(av[2], ' ');
 	dup2(fd, 0);
-	if (execve(get_command(av, env), ft_split(av[2], ' '), NULL) == -1)
-		dprintf(2, "Error\n");
+	close(fd);
+	pipe(fd_f);
+	id = fork();
+	if (id == 0)
+	{
+		dup2(fd_f[1], STDOUT_FILENO);
+		close(fd_f[0]);
+		close(fd_f[1]);
+		if (execve(get_command(av, env, 0), ft_split(av[2], ' '), NULL) == -1)
+			write(1, "Error\n", 6);
+	}
+	id1 = fork();
+	if (id1 == 0)
+	{
+		dup2(fd_f[0], STDIN_FILENO);
+		close(fd_f[0]);
+		close(fd_f[1]);
+		if (execve(get_command(av, env, 1), ft_split(av[3], ' '), NULL) == -1)
+			write(1, "Error\n", 6);
+	}
+	int fd4 = open(av[4], O_RDWR | O_CREAT, 0777);
+	dup2(fd, STDOUT_FILENO);
+	close(fd_f[0]);
+	close(fd_f[1]);
+	waitpid(id, NULL, 0);
+	waitpid(id1, NULL, 0);
 }

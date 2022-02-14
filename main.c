@@ -58,11 +58,11 @@ int main(int ac, char **av, char **env)
 		dup2(fd_f[0], STDIN_FILENO);
 		close(fd_f[0]);
 		close(fd_f[1]);
+		int fd4 = open(av[4], O_RDWR | O_CREAT, 0777);
+		dup2(fd4, STDOUT_FILENO);
 		if (execve(get_command(av, env, 1), ft_split(av[3], ' '), NULL) == -1)
 			write(1, "Error\n", 6);
 	}
-	int fd4 = open(av[4], O_RDWR | O_CREAT, 0777);
-	dup2(fd, STDOUT_FILENO);
 	close(fd_f[0]);
 	close(fd_f[1]);
 	waitpid(id, NULL, 0);

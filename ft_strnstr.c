@@ -1,19 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 09:16:21 by ijmari            #+#    #+#             */
-/*   Updated: 2021/11/04 09:16:42 by ijmari           ###   ########.fr       */
+/*   Created: 2021/09/29 14:22:44 by ijmari            #+#    #+#             */
+/*   Updated: 2022/02/15 10:31:34 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int c)
+#include "pipex.h"
+
+char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 {
-	if ((c >= 48 && c <= 57))
-		return (1);
-	else
-		return (0);
+	unsigned int	i;
+	int				j;
+
+	i = 0;
+	if (to_find[i] == '\0')
+		return ((char *)str);
+	while (str[i] && i < len)
+	{
+		j = 0;
+		while (str[i + j] == to_find[j] && (j + i < len))
+		{
+			if (to_find[j + 1] == '\0')
+				return ((char *) &str[i]);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

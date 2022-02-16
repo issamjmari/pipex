@@ -6,11 +6,11 @@
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 09:23:58 by ijmari            #+#    #+#             */
-/*   Updated: 2021/11/10 11:13:03 by ijmari           ###   ########.fr       */
+/*   Updated: 2022/02/15 10:38:08 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
 static int	ft_count_word(char const *s, char c)
 {

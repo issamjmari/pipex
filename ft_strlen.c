@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/02 12:16:15 by ijmari            #+#    #+#             */
-/*   Updated: 2021/11/05 15:58:37 by ijmari           ###   ########.fr       */
+/*   Created: 2021/11/02 12:16:34 by ijmari            #+#    #+#             */
+/*   Updated: 2022/02/15 10:38:35 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_tolower(int c)
+#include "pipex.h"
+
+size_t	ft_strlen(const char *s)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
-	if (c >= 'A' && c <= 'Z')
-		c += 32;
-	return (c);
+	while (s[i])
+		i++;
+	return (i);
 }

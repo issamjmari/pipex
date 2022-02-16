@@ -4,15 +4,23 @@
 #include <fcntl.h>
 #include "get_next_line/get_next_line.h"
 #include "pipex.h"
-void	ft_free(char **ptr1)
+void	ft_free(char **ptr1, char **ptr2)
 {
 	int i;
-	int count;
+	int j;
 
+	j = 0;
 	i = 0;
 	while (ptr1[i])
-		free(ptr1[i++]);
+		i++;
+	while(ptr2[j])
+		j++;
+	while(ptr1[--i])
+		free(ptr1[i]);
 	free(ptr1);
+	while(ptr2[--j])
+		free(ptr1[j]);
+	free(ptr2);
 }
 char	*get_command (char **av, char **env, int count)
 {
@@ -22,8 +30,8 @@ char	*get_command (char **av, char **env, int count)
 	char **arg;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i],"PATH=",5) == 0)
-			paths = ft_split(ft_strnstr(env[i], "/", 6), ':');
+		if (strncmp(env[i],"PATH=",5) == 0)
+			paths = ft_split(strnstr(env[i], "/", 6), ':');
 		i++;
 	}
 	if (count == 0)
@@ -35,18 +43,9 @@ char	*get_command (char **av, char **env, int count)
 		paths[j] = ft_strjoin(paths[j], "/");
 		paths[j] = ft_strjoin(paths[j], arg[0]);
 		if (access(paths[j], F_OK) == 0)
-		{
-
-			ft_free(arg);
-			char *cpy = ft_substr(paths[j],0,ft_strlen(paths[j]));
-			ft_free(paths);
-			return (cpy);
-		}
+			return (paths[j]);
 		j++;
 	}
-	ft_free(paths);
-	ft_free(arg);
-	// while(1);
 	return (0);
 }
 
@@ -96,15 +95,34 @@ int main(int ac, char **av, char **env)
 	}
 	path = get_command(av, env, 0);
 	if(!path)
-		error1(av);
+	{
+		if(!strncmp(av[2], "", 1))
+		{
+			write(2, "permission denied:", 18);
+			exit(1);
+		}
+		write(2, "command not found: ", 20);
+		write(2, ft_split(av[2], ' ')[0], ft_strlen(ft_split(av[2], ' ')[0]));
+		write(2, "\n", 1);
+		exit(1);
+	}
 	dup2(fd, 0);
 	close(fd);
 	pipe(fd_f);
 	first_f(path ,fd_f, av, env);
 	path2 = get_command(av, env, 1);
-	while(1);
 	if(!path2)
-		error2(av);
+	{
+		if(!strncmp(av[3], "", 1))
+		{
+			write(2, "permission denied:", 18);
+			exit(1);
+		}
+		write(2, "command not found: ", 20);
+		write(2, ft_split(av[3], ' ')[0], ft_strlen(ft_split(av[2], ' ')[0]));
+		write(2, "\n", 1);
+		exit(1);
+	}
 	second_f(path2, fd_f, av, env);
 	close(fd_f[0]);
 	close(fd_f[1]);

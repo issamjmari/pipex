@@ -6,7 +6,7 @@
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:51:59 by ijmari            #+#    #+#             */
-/*   Updated: 2022/02/14 09:47:17 by ijmari           ###   ########.fr       */
+/*   Updated: 2022/02/19 11:19:30 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
-#define BUFFER_SIZE 10
+# define BUFFER_SIZE 10
 
 size_t	ft_strlen(const char *s);
 char	*get_next_line(int fd);

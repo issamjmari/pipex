@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/29 09:58:19 by ijmari            #+#    #+#             */
-/*   Updated: 2022/02/19 11:19:43 by ijmari           ###   ########.fr       */
+/*   Created: 2021/11/04 09:38:37 by ijmari            #+#    #+#             */
+/*   Updated: 2022/02/19 11:23:15 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_strncmp(char *s1, char *s2, unsigned int n)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	unsigned int	i;
-	unsigned char	*st1;
-	unsigned char	*st2;
+	char	*temp;
+	size_t	i;
 
-	st1 = (unsigned char *) s1;
-	st2 = (unsigned char *) s2;
 	i = 0;
-	if (n == 0)
+	if (!s)
+		return (NULL);
+	if (start > ft_strlen(s))
+		len = 0;
+	else if (ft_strlen(s) < len)
+		len = ft_strlen(s) - start;
+	temp = (char *)malloc(len + 1);
+	if (!temp)
 		return (0);
-	while (st1[i] != '\0' && st2[i] != '\0'
-		&& st1[i] == st2[i] && i < (n - 1))
-		i++;
-	return (st1[i] - st2[i]);
+	while (s[start] && i < len)
+		temp[i++] = s[start++];
+	temp[i] = '\0';
+	return (temp);
 }

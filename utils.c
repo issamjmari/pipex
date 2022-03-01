@@ -6,7 +6,7 @@
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 11:03:26 by ijmari            #+#    #+#             */
-/*   Updated: 2022/02/28 18:12:36 by ijmari           ###   ########.fr       */
+/*   Updated: 2022/03/01 11:25:08 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ char	*path_valid(char **paths, char **arg, int i, int j)
 {
 	char	*cpy;
 
-	if(access(arg[0], F_OK) == 0)
-			return (arg[0]);
+	if (access(arg[0], F_OK) == 0)
+		return (arg[0]);
 	while (paths[j])
 	{
 		paths[j] = ft_strjoin(paths[j], "/");

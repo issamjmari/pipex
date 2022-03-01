@@ -6,7 +6,7 @@
 /*   By: ijmari <ijmari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 11:07:04 by ijmari            #+#    #+#             */
-/*   Updated: 2022/02/28 13:32:42 by ijmari           ###   ########.fr       */
+/*   Updated: 2022/03/01 11:23:24 by ijmari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*get_command(char **av, char **env, int count)
 	return (0);
 }
 
-void	second_f(char *path2, int fd_f[2], char **av, int id1, char **env)
+void	second_f(char *path2, int fd_f[2], char **av, char **env)
 {
 	int	fd4;
 
@@ -74,11 +74,11 @@ void	second_f(char *path2, int fd_f[2], char **av, int id1, char **env)
 	close(fd_f[0]);
 	dup2(fd4, 1);
 	close(fd4);
-	if (execve(path2, ft_split(av[3], ' '), NULL) == -1)
+	if (execve(path2, ft_split(av[3], ' '), env) == -1)
 		exit(1);
 }
 
-void	first_f(char *path, int fd_f[2], char **av, int id, char **env)
+void	first_f(char *path, int fd_f[2], char **av, char **env)
 {
 	int	fd;
 
@@ -96,7 +96,7 @@ void	first_f(char *path, int fd_f[2], char **av, int id, char **env)
 	close (fd_f[0]);
 	dup2(fd_f[1], 1);
 	close(fd_f[1]);
-	if (execve(path, ft_split(av[2], ' '), NULL) == -1)
+	if (execve(path, ft_split(av[2], ' '), env) == -1)
 		exit(1);
 }
 
@@ -110,16 +110,16 @@ int	main(int ac, char **av, char **env)
 
 	if (ac != 5)
 	{
-		write(2, "Error\n", 6);
+		write(2, "Error in arguments\n", 19);
 		exit(1);
 	}
 	pipe(fd_f);
 	id = fork();
 	if (id == 0)
-		first_f(path, fd_f, av, id, env);
+		first_f(path, fd_f, av, env);
 	id1 = fork();
 	if (id1 == 0)
-		second_f(path2, fd_f, av, id1, env);
+		second_f(path2, fd_f, av, env);
 	close(fd_f[0]);
 	close(fd_f[1]);
 	waitpid(id, NULL, 0);
